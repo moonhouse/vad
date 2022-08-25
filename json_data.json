@@ -1,0 +1,213 @@
+{
+    "vemardet-1918-txt.zip": {
+        "datestyle": "old",
+        "published": 1918,
+        "url": "http://runeberg.org/vemardet/1918/",
+        "page_offset": 4,
+        "qid": "Q21597586"
+    },
+    "vemardet-1925-txt.zip": {
+        "datestyle": "old",
+        "published": 1925,
+        "url": "http://runeberg.org/vemardet/1925/",
+        "page_offset": 6,
+        "qid": "Q21597589"
+    },
+    "vemardet-1933-txt.zip": {
+        "datestyle": "old",
+        "published": 1933,
+        "url": "http://runeberg.org/vemardet/1933/",
+        "page_offset": 0,
+        "qid": "Q21597606"
+    },
+    "vemardet-1939-txt.zip": {
+        "datestyle": "old",
+        "published": 1939,
+        "url": "http://runeberg.org/vemardet/1939/",
+        "page_offset": 0,
+        "qid": "Q21597610"
+    },
+    "vemardet-1943-txt.zip": {
+        "datestyle": "old",
+        "published": 1943,
+        "url": "http://runeberg.org/vemardet/1943/",
+        "page_offset": 0,
+        "qid": "Q21597612"
+    },
+    "vemardet-1945-txt.zip": {
+        "datestyle": "old",
+        "published": 1945,
+        "url": "http://runeberg.org/vemardet/1945/",
+        "page_offset": 0,
+        "qid": "Q21597613"
+    },
+    "vemardet-1953-txt.zip": {
+        "datestyle": "old",
+        "published": 1953,
+        "url": "http://runeberg.org/vemardet/1953/",
+        "page_offset": 20,
+        "qid": "Q21597617"
+    },
+    "vemardet-1955-txt.zip": {
+        "datestyle": "old",
+        "published": 1955,
+        "url": "http://runeberg.org/vemardet/1955/",
+        "page_offset": 24,
+        "qid": "Q21597618"
+    },
+    "vemardet-1957-txt.zip": {
+        "datestyle": "old",
+        "published": 1957,
+        "url": "http://runeberg.org/vemardet/1957/",
+        "page_offset": 24,
+        "qid": "Q21597619"
+    },
+    "vemardet-1963-txt.zip": {
+        "datestyle": "old",
+        "published": 1963,
+        "url": "http://runeberg.org/vemardet/1963/",
+        "page_offset": 16,
+        "qid": "Q21597623"
+    },
+    "vemardet-1967-txt.zip": {
+        "datestyle": "old",
+        "published": 1967,
+        "url": "http://runeberg.org/vemardet/1967/",
+        "page_offset": 16,
+        "qid": "Q21597625"
+    },
+    "vemardet-1969-txt.zip": {
+        "datestyle": "old",
+        "published": 1969,
+        "url": "http://runeberg.org/vemardet/1969/",
+        "page_offset": 16,
+        "qid": "Q21597626"
+    },
+    "vemardet-1977-txt.zip": {
+        "datestyle": "new",
+        "published": 1977,
+        "url": "http://runeberg.org/vemardet/1977/",
+        "page_offset": 20,
+        "qid": "Q21597631"
+    },
+    "vemardet-1981-txt.zip": {
+        "datestyle": "new",
+        "published": 1981,
+        "url": "http://runeberg.org/vemardet/1981/",
+        "page_offset": 20,
+        "qid": "Q21597634"
+    },
+    "vemardet-1985-txt.zip": {
+        "datestyle": "new",
+        "published": 1985,
+        "url": "http://runeberg.org/vemardet/1985/",
+        "page_offset": 0,
+        "qid": "Q21597636"
+    },
+    "vemardet-1993-txt.zip": {
+        "datestyle": "new",
+        "published": 1993,
+        "url": "http://runeberg.org/vemardet/1993/",
+        "page_offset": 0,
+        "qid": "Q21597645"
+    },
+    "vemardet-1995-txt.zip": {
+        "datestyle": "new",
+        "published": 1995,
+        "url": "http://runeberg.org/vemardet/1995/",
+        "page_offset": 0,
+        "qid": "Q21597646"
+    },
+    "vemardet-1997-txt.zip": {
+        "datestyle": "new",
+        "published": 1997,
+        "url": "http://runeberg.org/vemardet/1997/",
+        "page_offset": 0,
+        "qid": "Q21597647"
+    },
+    "vemardet-2001-txt.zip": {
+        "datestyle": "new",
+        "published": 2001,
+        "url": "http://runeberg.org/vemardet/2001/",
+        "page_offset": 0,
+        "qid": "Q21597650"
+    },
+    "vemarhon-txt.zip": {
+        "datestyle": "new",
+        "published": 1988,
+        "url": "http://runeberg.org/vemarhon/",
+        "page_offset": 0,
+        "qid": "Q19897035"
+    },
+    "vemarvem-gota48-txt.zip": {
+        "datestyle": "old",
+        "published": 1948,
+        "url": "http://runeberg.org/vemarvem/gota48/",
+        "page_offset": 0,
+        "qid": "Q21586303"
+    },
+    "vemarvem-gota65-txt.zip": {
+        "datestyle": "old",
+        "published": 1965,
+        "url": "http://runeberg.org/vemarvem/gota65/",
+        "page_offset": 24,
+        "qid": "Q111521121"
+    },
+    "vemarvem-norr68-txt.zip": {
+        "datestyle": "old",
+        "published": 1968,
+        "url": "http://runeberg.org/vemarvem/norr68/",
+        "page_offset": 24,
+        "qid": "Q21586313"
+    },
+    "vemarvem-skane48-txt.zip": {
+        "datestyle": "old",
+        "published": 1948,
+        "url": "http://runeberg.org/vemarvem/skane48/",
+        "page_offset": 0,
+        "qid": "Q21586304"
+    },
+    "vemarvem-skane66-txt.zip": {
+        "datestyle": "old",
+        "published": 1966,
+        "url": "http://runeberg.org/vemarvem/skane66/",
+        "page_offset": 24,
+        "qid": "Q21586312"
+    },
+    "vemarvem-sthlm45-txt.zip": {
+        "datestyle": "old",
+        "published": 1945,
+        "url": "http://runeberg.org/vemarvem/sthlm45/",
+        "page_offset": 16,
+        "qid": "Q21586300"
+    },
+    "vemarvem-sthlm62-txt.zip": {
+        "datestyle": "old",
+        "published": 1962,
+        "url": "http://runeberg.org/vemarvem/sthlm62/",
+        "page_offset": 24,
+        "qid": "Q21586309"
+    },
+    "vemarvem-svea64-txt.zip": {
+        "datestyle": "old",
+        "published": 1964,
+        "url": "http://runeberg.org/vemarvem/svea64/",
+        "page_offset": 24,
+        "qid": "Q21586310"
+    },
+    "vemochvad-1967-txt.zip": {
+        "datestyle": "old",
+        "published": 1967,
+        "url": "http://runeberg.org/vemochvad/1967/",
+        "page_offset": 0,
+        "qid": "Q65523961"
+    },
+    "vemvardet-txt.zip": {
+        "datestyle": "old",
+        "published": 1944,
+        "cutoff": 1900,
+        "url": "http://runeberg.org/vemvardet/",
+        "page_offset": 0,
+        "qid": "Q21980378"
+    }
+}

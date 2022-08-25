@@ -1,0 +1,167 @@
+<!doctype html>
+
+<head>
+    <title>{{hits|length}} {{date}}</title>
+    {% if hits|length == 0 %}
+    <link rel="icon" type="image/x-icon" href="/static/blank.png">
+    {% else %}
+    <link rel="icon" type="image/x-icon" href="/static/green.png">
+    {% endif %}
+    <style>
+        <!--
+        .containers {
+            display: flex;
+        }
+
+        .container .content {
+            display: block;
+            padding: 5px;
+            font-family: sans-serif;
+            font-size: 0.8em;
+        }
+
+        .container .header {
+            background: #ccc;
+            margin-top: 10px;
+        }
+
+        .namehits1
+        {
+            background: #ccc;
+        }
+
+        .namehits2
+        {
+            background: #fdd;
+        }
+
+        .namehits3
+        {
+            background: #fcc;
+        }
+
+        .namehits4
+        {
+            background: #fbb;
+        }
+
+
+        .datehits1
+        {
+            background: #cfc;
+        }
+
+        -->
+    </style>
+    <script language="javascript">
+
+        const regexp = /\s*[\*°\"•♦»\^■]?([^,]*),([^,]*)/;
+
+        function toTitleCase(str) {
+            return str.replace(
+                /\w\S*/g,
+                function (txt) {
+                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                }
+            );
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const boxes = document.querySelectorAll('.container .header');
+
+            boxes.forEach(box => {
+                box.addEventListener('click', function handleClick(event) {
+                    toggle(event.target);
+                    box.setAttribute('style', 'background-color: yellow;');
+                });
+            });
+
+            const rows = document.querySelectorAll('span.row');
+
+            rows.forEach(row => {
+                row.addEventListener('click', function handleClick(event) {
+                    mark_row(event.target);
+                    row.setAttribute('style', 'background-color: yellow;');
+                });
+            });
+        }, false);
+
+        function quickstatement(book_dataset, firstname, lastname, name_string) {
+            qid = book_dataset.personQid;
+            console.log(document.getElementById('statements').dataset.started);
+            if (qid == 'LAST' && document.getElementById('statements').dataset.started == "new") {
+                fullname = toTitleCase(`${firstname} ${lastname}`);
+                data = `CREATE
+${qid}|Lsv|"${fullname}"
+${qid}|Dsv|"svensk "
+${qid}|P31|Q5
+${qid}|P27|Q34
+${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${book_dataset.physicalPage}"
+`
+            }
+            else {
+                data = ''
+            }
+            data += `${qid}|P1343|${book_dataset.qid}|P958|"${name_string}"|P304|"${book_dataset.physicalPage}"|S854|"${book_dataset.url}"|S813|+2022-06-04T00:00:00Z/11 /* Data based on OCR-ed version from Projekt Runeberg at ${book_dataset.url} */\n`;
+            return data;
+        }
+
+        function mark_row(target) {
+            target = target.closest('span');
+            console.log(target);
+            console.log(target.innerHTML);
+            no_format = target.innerHTML.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(',,',',');
+            console.log(no_format);
+            groups = no_format.match(regexp);
+            lastname = groups[1].trim().replace(/\s+/g, ' ').replaceAll('|','l');
+            firstname = groups[2].trim().replace(/\s+/g, ' ').replaceAll('|','l');
+            console.log(toTitleCase(`${firstname} ${lastname}`));
+            book = target.closest('div.content').parentElement.dataset;
+            console.log(book);
+            console.log(quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`));
+            const textarea = document.getElementById('statements');
+            statements.value += quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`);
+            document.getElementById('statements').dataset.started = "old";
+
+        }
+
+        function toggle(target) {
+            ele = target.parentElement.querySelector('.content');
+            if (ele.style.display == "block") {
+                ele.style.display = "none";
+            }
+            else {
+                ele.style.display = "block";
+            }
+        }
+
+        function clickQS() {
+            qs = "https://quickstatements.toolforge.org/#/v1=" + encodeURIComponent(document.getElementById('statements').value.replaceAll('\n', '||'));
+            console.log(qs);
+            window.open(qs, '_blank').focus();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="containers">
+        {% for hit in hits %}
+        <div class="container" data-qid="{{ hit.qid }}" data-page="{{hit.page}}" data-year="{{hit.year}}"
+            data-physical-page="{{hit.physical_page}}" data-person-qid="{{hit.person_qid}}" data-url="{{hit.url}}">
+            <div class="header"><span>Expand</span>
+                {{ hit.file }} {{ hit.page }} {{ hit.url }}
+            </div>
+            <div class="content" id="doc-{{ hit.id }}">
+                {{ hit.contents }}
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+    <textarea id="statements" rows="10" cols="256" data-started="new"></textarea>
+    <br><br>
+    <button onclick="clickQS()">To Quickstatements</button>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+<!doctype html>
+
+<head>
+    <title>Lista: {{hits|length}}</title>
+</head>
+
+<body>
+    <ul>
+        {% for hit in hits %}
+        <li><a href="{{hit.url}}">{{ hit.qid }} {{hit.label}}</a> (<a
+                href="https://www.wikidata.org/wiki/{{hit.qid}}">WD</a>)</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

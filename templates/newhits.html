@@ -1,0 +1,61 @@
+<!doctype html>
+
+<head>
+    <title>Lista: {{hits|length}}</title>
+    <style>
+        <!--
+            .background17male { background-color: lightgreen; }
+            .background16male { background-color: lightgreen; }
+            .background15male { background-color: lightgreen; }
+            .background14male { background-color: lightgreen; }
+            .background13male { background-color: lightgreen; }
+            .background12male { background-color: lightgreen; }
+            .background11male { background-color: lightgreen; }
+            .background10male { background-color: lightgreen; }
+            .background9male { background-color: lightgreen; }
+            .background8male { background-color: lightgreen; }
+            .background7male { background-color: lightgreen; }
+            .background6male { background-color: lightgreen; }
+
+            .background17female { background-color: pink; }
+            .background16female { background-color: pink; }
+            .background15female { background-color: pink; }
+            .background14female { background-color: pink; }
+            .background13female { background-color: pink; }
+            .background12female { background-color: pink; }
+            .background11female { background-color: pink; }
+            .background10female { background-color: pink; }
+            .background9female { background-color: pink; }
+            .background8female { background-color: pink; }
+            .background7female { background-color: pink; }
+            .background6female { background-color: pink; }
+            -->
+    </style>
+</head>
+
+<body>
+    <ul>
+
+        {% for item in hits %}
+        {% if item.results.hits.total.value %}
+            <li class="background{{ item.results.hits.max_score | round | int}}{{item.gender}}">
+                <a href="{{item.url}}">{{ item.qid }} {{item.label}}</a> (<a
+                        href="https://www.wikidata.org/wiki/{{item.qid}}">WD</a>)
+                        {{ item.results.hits.total.value }}
+
+
+                        {{ item.results.hits.max_score }} 
+                <!-- <ul>
+                    {% for result in item.results.hits.hits %}
+                    <li>
+                        {{ result._source.file }}: {{ result._source.contents }}                          
+                    </li>
+                {% endfor %}
+                </ul> -->
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
