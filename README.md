@@ -6,18 +6,27 @@ Elasticsearch endpoint with username and password needs to be configured in .env
 
 ## Setup Elastic
 
-From instructions at https://hub.docker.com/_/elasticsearch
+From instructions at https://hub.docker.com/_/elasticsearch. Choose a password to set for environment variable ELASTIC_PASSWORD and also set the same password in the Elastic connection string in the .env file.
+
 
 ````bash
 docker network create vadnetwork
-docker run -d --name vadelasticsearch --net vadnetwork -p 9200:9200 -p 9300:9300 -e ELASTIC_PASSWORD=gurkmeja -e "discovery.type=single-node" 
-elasticsearch:8.2.2
+docker run -d --name vadelasticsearch --net vadnetwork -p 9200:9200 -p 9300:9300 -e ELASTIC_PASSWORD={PASSWORD SAME AS IN .env} -e "discovery.type=single-node"  elasticsearch:8.2.2
+````
+
+## Download OCR'd text
+You can manually download zip files with the OCR'd text per page following Projekt Runeberg's own format. 
+
+The script download_zips.py contains code that tries to do it for you.
+````
+pipenv run python download_zips.py
 ````
 
 ## Index pages
 ````bash
 pipenv run python index.py
 ````
+This will take several minutes to run.
 
 ## Start server
 
