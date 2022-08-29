@@ -91,7 +91,7 @@
             });
         }, false);
 
-        function quickstatement(book_dataset, firstname, lastname, name_string) {
+        function quickstatement(book_dataset, firstname, lastname, name_string, page) {
             qid = book_dataset.personQid;
             console.log(document.getElementById('statements').dataset.started);
             if (qid == 'LAST' && document.getElementById('statements').dataset.started == "new") {
@@ -101,13 +101,13 @@ ${qid}|Lsv|"${fullname}"
 ${qid}|Dsv|"svensk "
 ${qid}|P31|Q5
 ${qid}|P27|Q34
-${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${book_dataset.physicalPage}"
+${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
 `
             }
             else {
                 data = ''
             }
-            data += `${qid}|P1343|${book_dataset.qid}|P958|"${name_string}"|P1810|"${name_string}"|P304|"${book_dataset.physicalPage}"|S854|"${book_dataset.url}"|S813|+2022-08-26T00:00:00Z/11 /* Data based on OCR-ed version from Projekt Runeberg at ${book_dataset.url} */\n`;
+            data += `${qid}|P1343|${book_dataset.qid}|P958|"${name_string}"|P1810|"${name_string}"|P304|"${page}"|S854|"${book_dataset.url}"|S813|+2022-08-26T00:00:00Z/11 /* Data based on OCR-ed version from Projekt Runeberg at ${book_dataset.url} */\n`;
             return data;
         }
 
@@ -123,7 +123,7 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${book_dataset
             console.log(toTitleCase(`${firstname} ${lastname}`));
             book = target.closest('div.content').parentElement.dataset;
             console.log(book);
-            console.log(quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`));
+            console.log(quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`), book['physicalPage']);
             add_statement(book, target.dataset, `${lastname}, ${firstname}`);
             const textarea = document.getElementById('statements');
             /* statements.value += quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`); */
@@ -136,7 +136,7 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${book_dataset
             table = JSON.parse(document.getElementById('statementtable').dataset.statements);
             console.log(table);
             console.log(`add_statement ${book_dataset.personQid} ${book_dataset.physicalPage}  ${row_dataset.row} ${name_string}`);
-            table[book_dataset.qid] = { "book": book_dataset, "row": row_dataset.row, contents: name_string }
+            table[book_dataset.qid] = { "book": book_dataset, "row": row_dataset.row, contents: name_string, page: book_dataset.physicalPage }
             console.log(table);
             document.getElementById('statementtable').dataset.statements = JSON.stringify(table);
             renderTable();
@@ -205,7 +205,7 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${book_dataset
             hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
             for (var i in hits) {
                 row_data = hits[i];
-                statements.value += quickstatement(row_data['book'], '', '', row_data['contents']);
+                statements.value += quickstatement(row_data['book'], '', '', row_data['contents'], row_data['page']);
             }
         }
 
