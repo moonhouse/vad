@@ -25,32 +25,36 @@
             margin-top: 10px;
         }
 
-        .namehits1
-        {
+        .namehits1 {
             background: #ccc;
         }
 
-        .namehits2
-        {
+        .namehits2 {
             background: #fdd;
         }
 
-        .namehits3
-        {
+        .namehits3 {
             background: #fcc;
         }
 
-        .namehits4
-        {
+        .namehits4 {
             background: #fbb;
         }
 
 
-        .datehits1
-        {
+        .datehits1 {
             background: #cfc;
         }
 
+        .pageinput {
+            width: 100px;
+            font-family: monospace;
+        }
+
+        .nameinput {
+            width: 350px;
+            font-family: monospace;
+        }
         -->
     </style>
     <script language="javascript">
@@ -111,19 +115,31 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${book_dataset
             target = target.closest('span');
             console.log(target);
             console.log(target.innerHTML);
-            no_format = target.innerHTML.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(',,',',');
+            no_format = target.innerHTML.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(',,', ',');
             console.log(no_format);
             groups = no_format.match(regexp);
-            lastname = groups[1].trim().replace(/\s+/g, ' ').replaceAll('|','l');
-            firstname = groups[2].trim().replace(/\s+/g, ' ').replaceAll('|','l');
+            lastname = groups[1].trim().replace(/\s+/g, ' ').replaceAll('|', 'l');
+            firstname = groups[2].trim().replace(/\s+/g, ' ').replaceAll('|', 'l');
             console.log(toTitleCase(`${firstname} ${lastname}`));
             book = target.closest('div.content').parentElement.dataset;
             console.log(book);
             console.log(quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`));
+            add_statement(book, target.dataset, `${lastname}, ${firstname}`);
             const textarea = document.getElementById('statements');
-            statements.value += quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`);
+            /* statements.value += quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`); */
+            renderQuickstatements();
             document.getElementById('statements').dataset.started = "old";
 
+        }
+
+        function add_statement(book_dataset, row_dataset, name_string) {
+            table = JSON.parse(document.getElementById('statementtable').dataset.statements);
+            console.log(table);
+            console.log(`add_statement ${book_dataset.personQid} ${book_dataset.physicalPage}  ${row_dataset.row} ${name_string}`);
+            table[book_dataset.qid] = { "book": book_dataset, "row": row_dataset.row, contents: name_string }
+            console.log(table);
+            document.getElementById('statementtable').dataset.statements = JSON.stringify(table);
+            renderTable();
         }
 
         function toggle(target) {
@@ -133,6 +149,63 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${book_dataset
             }
             else {
                 ele.style.display = "block";
+            }
+        }
+
+
+
+        function renderTable() {
+            hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
+            let table = document.createElement('table');
+            for (var i in hits) {
+                row_data = hits[i];
+                console.log(i);
+                console.log(row_data);
+                let row = document.createElement('tr');
+                row.innerHTML = `<td>
+                    <a href="${row_data['book']['url']}">${row_data['book']['year']}</a>
+                     <input class="pageinput" value="${row_data['book']['physicalPage']}">
+                      <input class="nameinput" value="${row_data['contents']}" > 
+                       </td>`;
+                       row.dataset.book = JSON.stringify(row_data['book'])
+                table.appendChild(row);
+                const pageinputs = row.querySelector('input[class="pageinput"]');
+                const nameinputs = row.querySelector('input[class="nameinput"]');
+                pageinputs.addEventListener('blur', (event) => {
+                    var row = event.target.parentElement.parentElement;
+                    var bookQid = JSON.parse(row.dataset.book)['qid'];
+                    var hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
+                    var page = row.getElementsByClassName('pageinput')[0].value;
+                    var name = row.getElementsByClassName('nameinput')[0].value;
+                    hits[bookQid]['contents'] = name;
+                    hits[bookQid]['page'] = page;
+                    document.getElementById('statementtable').dataset.statements = JSON.stringify(hits);
+                    renderQuickstatements();
+
+                });
+                nameinputs.addEventListener('blur', (event) => {
+                    var row = event.target.parentElement.parentElement;
+                    var bookQid = JSON.parse(row.dataset.book)['qid'];
+                    var hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
+                    var page = row.getElementsByClassName('pageinput')[0].value;
+                    var name = row.getElementsByClassName('nameinput')[0].value;
+                    hits[bookQid]['contents'] = name;
+                    hits[bookQid]['page'] = page;
+                    document.getElementById('statementtable').dataset.statements = JSON.stringify(hits);
+                    renderQuickstatements();
+                });
+
+            }
+            document.getElementById('statementtable').firstElementChild.replaceWith(table);
+        }
+
+        function renderQuickstatements() {
+            /* const textarea = document.getElementById('statements'); */
+            statements.value = ""
+            hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
+            for (var i in hits) {
+                row_data = hits[i];
+                statements.value += quickstatement(row_data['book'], '', '', row_data['contents']);
             }
         }
 
@@ -158,6 +231,9 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${book_dataset
         </div>
 
         {% endfor %}
+    </div>
+    <div id="statementtable" data-statements="{}">
+        <table></table>
     </div>
     <textarea id="statements" rows="10" cols="256" data-started="new"></textarea>
     <br><br>
