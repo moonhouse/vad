@@ -52,7 +52,7 @@ def query_wikidata(sparql):
                'http://www.wikidata.org/entity/Q6581097': 'male', '': ''}
     faulty_references = requests.get(
         f"https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query={urllib.parse.quote(sparql)}").json()
-    print(faulty_references)
+
     results = [{'born': datetime.datetime.strptime(result['fodd']['value'], '%Y-%m-%dT00:00:00Z').strftime('%Y-%m-%d'), 'qid': result['item']['value'].replace(
         'http://www.wikidata.org/entity/', ''), 'label': result['itemLabel']['value'], 'gender': genders[result['gender']['value']] if 'gender' in result else "unknown"} for result in faulty_references['results']['bindings']]
     for result in results:
@@ -290,9 +290,7 @@ def no_reference_described(qid):
         f'    }}'
         f'    LIMIT 100'
     )
-    print(sparql)
     wd_items = query_wikidata(sparql)
-    print(wd_items)
     searches = [[{"index": "vad"}, {"track_scores": True, "sort": "year", "query": {"bool": {"must": {"term": {
         "dates": x['born']}}, "should": [{"match": {"contents": x['label']}}], "minimum_should_match": 1, "boost": 1.0}}}] for x in wd_items]
     searches = [item for sublist in searches for item in sublist]

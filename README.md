@@ -31,7 +31,13 @@ This will take several minutes to run.
 ## Start server
 
 ````bash
-FLASK_ENV=development FLASK_APP=server pipenv run flask run
+pipenv run flask --app server run
+````
+
+or if running in debug mode:
+
+````bash
+pipenv run flask --app server --debug run
 ````
 
 # Setup DuckDB database
