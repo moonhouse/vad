@@ -49,7 +49,9 @@ def create_hits(hits, qid="LAST", names=[], dates=[]):
 
 def query_wikidata(sparql):
     genders = {'http://www.wikidata.org/entity/Q6581072': 'female',
-               'http://www.wikidata.org/entity/Q6581097': 'male', '': ''}
+               'http://www.wikidata.org/entity/Q6581097': 'male', 
+               'http://www.wikidata.org/wiki/Q1052281': 'transgender female',
+               '': ''}
     faulty_references = requests.get(
         f"https://query.wikidata.org/bigdata/namespace/wdq/sparql?format=json&query={urllib.parse.quote(sparql)}").json()
 
