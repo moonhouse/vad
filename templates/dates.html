@@ -91,6 +91,10 @@
             });
         }, false);
 
+        function qsr(row_data) {
+            return quickstatement(row_data['book'], '', '', row_data['contents'], row_data['page']);
+        }
+
         function quickstatement(book_dataset, firstname, lastname, name_string, page) {
             qid = book_dataset.personQid;
             if (qid == 'LAST' && document.getElementById('statements').dataset.started == "new") {
@@ -106,7 +110,7 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
             else {
                 data = ''
             }
-            data += `${qid}|P1343|${book_dataset.qid}|P958|"${name_string}"|P1810|"${name_string}"|P304|"${page}"|S854|"${book_dataset.url}"|S813|+2022-08-26T00:00:00Z/11 /* Data based on OCR-ed version from Projekt Runeberg at ${book_dataset.url} */\n`;
+            data += `${qid}|P1343|${book_dataset.qid}|P958|"${name_string}"|P1810|"${name_string}"|P304|"${page}"|S854|"${book_dataset.url}"|S813|+2022-08-26T00:00:00Z/11 /* Data based on OCR-ed version from Projekt Runeberg at ${book_dataset.url} */`;
             return data;
         }
 
@@ -118,8 +122,6 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
             firstname = groups[2].trim().replace(/\s+/g, ' ').replaceAll('|', 'l');
             book = target.closest('div.content').parentElement.dataset;
             add_statement(book, target.dataset, `${lastname}, ${firstname}`);
-            renderQuickstatements();
-
         }
 
         function add_statement(book_dataset, row_dataset, name_string) {
@@ -141,7 +143,7 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
 
         function delete_statement(qid) {
             var hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
-            delete(hits[qid]);
+            delete (hits[qid]);
             document.getElementById('statementtable').dataset.statements = JSON.stringify(hits);
             renderTable();
         }
@@ -157,7 +159,7 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
                      <input class="pageinput" value="${row_data['book']['physicalPage']}">
                       <input class="nameinput" value="${row_data['contents']}" ><button onclick="delete_statement('${row_data['book']['qid']}')">X</button>
                        </td>`;
-                       row.dataset.book = JSON.stringify(row_data['book'])
+                row.dataset.book = JSON.stringify(row_data['book'])
                 table.appendChild(row);
                 const pageinputs = row.querySelector('input[class="pageinput"]');
                 const nameinputs = row.querySelector('input[class="nameinput"]');
@@ -188,14 +190,17 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
 
         function renderQuickstatements() {
             var statements = '';
-            /* const textarea = document.getElementById('statements'); */
-            /* statements.value = "" */
             hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
-            for (var i in hits) {
-                row_data = hits[i];
-                statements += quickstatement(row_data['book'], '', '', row_data['contents'], row_data['page']);
+            let sortable = [];
+            for (var hit in hits) {
+                sortable.push(hits[hit]);
             }
-            return statements;
+
+            sortable.sort(function (a, b) {
+                return a['book']['year'] - b['book']['year'];
+            });
+
+            return sortable.map(qsr);
         }
 
         function renderCSV() {
@@ -210,7 +215,7 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
 
 
         function clickQS() {
-            qs = "https://quickstatements.toolforge.org/#/v1=" + encodeURIComponent(renderQuickstatements().replaceAll('\n', '||'));
+            qs = "https://quickstatements.toolforge.org/#/v1=" + encodeURIComponent(renderQuickstatements().join('||'));
             window.open(qs, '_blank').focus();
         }
     </script>
