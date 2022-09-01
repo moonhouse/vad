@@ -93,7 +93,6 @@
 
         function quickstatement(book_dataset, firstname, lastname, name_string, page) {
             qid = book_dataset.personQid;
-            console.log(document.getElementById('statements').dataset.started);
             if (qid == 'LAST' && document.getElementById('statements').dataset.started == "new") {
                 fullname = toTitleCase(`${firstname} ${lastname}`);
                 data = `CREATE
@@ -113,31 +112,19 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
 
         function mark_row(target) {
             target = target.closest('span');
-            console.log(target);
-            console.log(target.innerHTML);
             no_format = target.innerHTML.replace(/<b>/g, '').replace(/<\/b>/g, '').replace(',,', ',');
-            console.log(no_format);
             groups = no_format.match(regexp);
             lastname = groups[1].trim().replace(/\s+/g, ' ').replaceAll('|', 'l');
             firstname = groups[2].trim().replace(/\s+/g, ' ').replaceAll('|', 'l');
-            console.log(toTitleCase(`${firstname} ${lastname}`));
             book = target.closest('div.content').parentElement.dataset;
-            console.log(book);
-            console.log(quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`), book['physicalPage']);
             add_statement(book, target.dataset, `${lastname}, ${firstname}`);
-            const textarea = document.getElementById('statements');
-            /* statements.value += quickstatement(book, firstname, lastname, `${lastname}, ${firstname}`); */
             renderQuickstatements();
-            document.getElementById('statements').dataset.started = "old";
 
         }
 
         function add_statement(book_dataset, row_dataset, name_string) {
             table = JSON.parse(document.getElementById('statementtable').dataset.statements);
-            console.log(table);
-            console.log(`add_statement ${book_dataset.personQid} ${book_dataset.physicalPage}  ${row_dataset.row} ${name_string}`);
             table[book_dataset.qid] = { "book": book_dataset, "row": row_dataset.row, contents: name_string, page: book_dataset.physicalPage }
-            console.log(table);
             document.getElementById('statementtable').dataset.statements = JSON.stringify(table);
             renderTable();
         }
@@ -159,8 +146,6 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
             let table = document.createElement('table');
             for (var i in hits) {
                 row_data = hits[i];
-                console.log(i);
-                console.log(row_data);
                 let row = document.createElement('tr');
                 row.innerHTML = `<td>
                     <a href="${row_data['book']['url']}">${row_data['book']['year']}</a>
@@ -200,18 +185,19 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
         }
 
         function renderQuickstatements() {
+            var statements = '';
             /* const textarea = document.getElementById('statements'); */
-            statements.value = ""
+            /* statements.value = "" */
             hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
             for (var i in hits) {
                 row_data = hits[i];
-                statements.value += quickstatement(row_data['book'], '', '', row_data['contents'], row_data['page']);
+                statements += quickstatement(row_data['book'], '', '', row_data['contents'], row_data['page']);
             }
+            return statements;
         }
 
         function clickQS() {
-            qs = "https://quickstatements.toolforge.org/#/v1=" + encodeURIComponent(document.getElementById('statements').value.replaceAll('\n', '||'));
-            console.log(qs);
+            qs = "https://quickstatements.toolforge.org/#/v1=" + encodeURIComponent(renderQuickstatements().replaceAll('\n', '||'));
             window.open(qs, '_blank').focus();
         }
     </script>
@@ -235,7 +221,6 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
     <div id="statementtable" data-statements="{}">
         <table></table>
     </div>
-    <textarea id="statements" rows="10" cols="256" data-started="new"></textarea>
     <br><br>
     <button onclick="clickQS()">To Quickstatements</button>
 </body>
