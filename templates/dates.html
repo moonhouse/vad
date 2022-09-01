@@ -196,6 +196,17 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
             return statements;
         }
 
+        function renderCSV() {
+            var csv = 'Described by source\tPerson\tSection\tPage\tURL\tDate\n';
+            hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
+            for (var i in hits) {
+                row_data = hits[i];
+                csv += `${row_data['book']['qid']}\t${row_data['book']['personQid']}\t${row_data['contents']}\t${row_data['page']}\t${row_data['book']['url']}\t2022-08-26\n`
+            }
+            return csv;
+        }
+
+
         function clickQS() {
             qs = "https://quickstatements.toolforge.org/#/v1=" + encodeURIComponent(renderQuickstatements().replaceAll('\n', '||'));
             window.open(qs, '_blank').focus();
