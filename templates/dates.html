@@ -139,7 +139,12 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
             }
         }
 
-
+        function delete_statement(qid) {
+            var hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
+            delete(hits[qid]);
+            document.getElementById('statementtable').dataset.statements = JSON.stringify(hits);
+            renderTable();
+        }
 
         function renderTable() {
             hits = JSON.parse(document.getElementById('statementtable').dataset.statements);
@@ -150,7 +155,7 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
                 row.innerHTML = `<td>
                     <a href="${row_data['book']['url']}">${row_data['book']['year']}</a>
                      <input class="pageinput" value="${row_data['book']['physicalPage']}">
-                      <input class="nameinput" value="${row_data['contents']}" > 
+                      <input class="nameinput" value="${row_data['contents']}" ><button onclick="delete_statement('${row_data['book']['qid']}')">X</button>
                        </td>`;
                        row.dataset.book = JSON.stringify(row_data['book'])
                 table.appendChild(row);
@@ -165,8 +170,6 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
                     hits[bookQid]['contents'] = name;
                     hits[bookQid]['page'] = page;
                     document.getElementById('statementtable').dataset.statements = JSON.stringify(hits);
-                    renderQuickstatements();
-
                 });
                 nameinputs.addEventListener('blur', (event) => {
                     var row = event.target.parentElement.parentElement;
@@ -177,7 +180,6 @@ ${qid}|P569|+{{date}}T00:00:00Z/11|S248|${book_dataset.qid}|S304|"${page}"
                     hits[bookQid]['contents'] = name;
                     hits[bookQid]['page'] = page;
                     document.getElementById('statementtable').dataset.statements = JSON.stringify(hits);
-                    renderQuickstatements();
                 });
 
             }
