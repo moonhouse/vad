@@ -1,14 +1,17 @@
-SELECT DISTINCT ?item ?itemLabel WHERE {
+# Persons described by source "Vem är vem" but missing reference to source
+SELECT DISTINCT ?item ?itemLabel ?part ?partLabel WHERE {
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   {
-    SELECT DISTINCT ?item WHERE {
+    SELECT DISTINCT ?item ?part WHERE {
       ?item p:P31 ?statement0.
       ?statement0 (ps:P31/(wdt:P279*)) wd:Q5.
       ?item p:P27 ?statement1.
       ?statement1 (ps:P27/(wdt:P279*)) wd:Q34.
       {
         ?item p:P1343 ?statement2.
-        ?statement2 (ps:P1343/(wdt:P279*)) wd:Q21597589.
+        ?statement2 ps:P1343 ?part.
+        ?part wdt:P361 ?edition.
+        ?edition wdt:P629 wd:Q19752305.
         FILTER(NOT EXISTS { ?statement2 prov:wasDerivedFrom ?reference. })
       }
     }
