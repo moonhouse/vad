@@ -1,35 +1,32 @@
 # Swedish citizens born 1840–1960 descibed by a source but not by Vem är det/Vem är vem/Vem är hon
-SELECT DISTINCT ?item ?itemLabel ?itemDescription ?fodd WHERE {
-  ?item p:P31 ?statement0.
-  ?statement0 (ps:P31/(wdt:P279*)) wd:Q5.
-  ?item p:P27 ?statement1.
-  ?statement1 (ps:P27/(wdt:P279*)) wd:Q34.
+SELECT DISTINCT ?item ?itemLabel ?itemDescription ?fodd ?dod WHERE {
+  ?item wdt:P31 wd:Q5;
+    wdt:P27 wd:Q34;
+    wdt:P569 ?fodd;
+    p:P1343 _:anyValueP1343.
+  OPTIONAL { ?item wdt:P570 ?dod. }
   ?item p:P569 ?statement_2.
   ?statement_2 psv:P569 ?statementValue_2.
   ?statementValue_2 wikibase:timePrecision ?precision_2.
-  ?item wdt:P569 ?fodd.
   FILTER(?precision_2 >= 11 )
   ?statementValue_2 wikibase:timeValue ?P569_2.
   FILTER(?P569_2 > "+1840-01-01T00:00:00Z"^^xsd:dateTime)
-  ?item p:P569 ?statement_3.
-  ?statement_3 psv:P569 ?statementValue_3.
+  ?statement_2 psv:P569 ?statementValue_3.
   ?statementValue_3 wikibase:timePrecision ?precision_3.
   FILTER(?precision_3 >= 11 )
   ?statementValue_3 wikibase:timeValue ?P569_3.
   FILTER(?P569_3 < "+1960-12-31T00:00:00Z"^^xsd:dateTime)
   MINUS {
-    ?item wdt:P1343 ?statement4.
-    ?statement4 wdt:P629 wd:Q5637701.
+    ?item wdt:P1343 ?vemArDetSource.
+    ?vemArDetSource wdt:P629 wd:Q5637701.
   }
   MINUS {
-    ?item wdt:P1343 ?statement5.
-    ?statement5 wdt:P361 ?statement6.
-    ?statement6 wdt:P629 wd:Q19752305.
+    ?item wdt:P1343 ?vemArVemBand.
+    ?vemArVemBand wdt:P361 ?vemArVemUpplaga.
+    ?vemArVemUpplaga wdt:P629 wd:Q19752305.
   }
   MINUS { ?item wdt:P1343 wd:Q19897035. }
   MINUS { ?item wdt:P1343 wd:Q79024851. }
-  ?item p:P1343 ?statement7.
-  ?statement7 (ps:P1343/(wdt:P279*)) _:anyValueP1343.
   SERVICE wikibase:label { bd:serviceParam wikibase:language "sv,en,[AUTO_LANGUAGE]". }
 }
 LIMIT 10000

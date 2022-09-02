@@ -1,0 +1,16 @@
+# Persons described by source "Vem är hon" but missing reference to source
+SELECT DISTINCT ?item ?itemLabel ?fodd ?dod WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  {
+    SELECT DISTINCT ?item ?fodd ?dod WHERE {
+      ?item wdt:P31 wd:Q5;
+        wdt:P27 wd:Q34;
+        wdt:P569 ?fodd.
+      OPTIONAL { ?item wdt:P570 ?dod. }
+      ?item p:P1343 ?describedStatement.
+      ?describedStatement ps:P1343 wd:Q19897035.
+      FILTER(NOT EXISTS { ?describedStatement prov:wasDerivedFrom ?reference. })
+    }
+    LIMIT 10000
+  }
+}
