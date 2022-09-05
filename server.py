@@ -1,17 +1,14 @@
-from venv import create
-from flask import Flask
-from elasticsearch import Elasticsearch
-from flask import render_template
-from markupsafe import Markup
-import requests
-import urllib.parse
 import datetime
-from itertools import chain
-import json
 import os
+import urllib.parse
+from itertools import chain
+
+import requests
+from elasticsearch import Elasticsearch
+from flask import Flask, render_template
+from markupsafe import Markup
 
 es = Elasticsearch(os.environ['ELASTIC_URL'],  verify_certs=False)
-
 app = Flask(__name__)
 
 
