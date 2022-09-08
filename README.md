@@ -40,12 +40,12 @@ or if running in debug mode:
 pipenv run flask --app server --debug run
 ````
 
-# Setup DuckDB database
+# Setup SQLite database
 
 A database is not needed for indexing in Elasticsearch. But might be useful for other uses. 
 
 ````bash
-duckdb vem.db
+sqlite3 vem.db
 ````
 
 ````SQL

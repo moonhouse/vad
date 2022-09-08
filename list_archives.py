@@ -1,10 +1,10 @@
-from zipfile import ZipFile
-import re
-from pathlib import Path
-import glob
 import datetime
-import duckdb
-
+import glob
+import json
+import re
+import sqlite3
+from pathlib import Path
+from zipfile import ZipFile
 
 with open('json_data.json') as json_file:
     mapping = json.load(json_file)
@@ -31,7 +31,7 @@ def convert_date(date_string, cut_off, style):
     else:
         return None
 
-con = duckdb.connect(database='vem.db', read_only=False)
+con = sqlite3.connect(database='vem.db')
 
 files = glob.glob('zips/*-txt.zip')
 for file in files:
